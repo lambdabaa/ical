@@ -1,7 +1,7 @@
 {
   "lex": {
     "macros": {
-      "ALPHA": "[A-Z][a-z]",
+      "ALPHA": "[A-WYZ][a-z]",
       "CLRF": "\\n",
       "CONTROL": "[\\x00-\\x08]|[\\x0A-\\x1F]|\\x7F",
       "DIGIT": "[0-9]",
@@ -62,8 +62,7 @@
       "alphanumericish"
     ],
     "xname": [
-      "X DASH alphanumericish",
-      "X DASH vendorid DASH alphanumericish"
+      "X DASH alphanumericish"
     ],
     "alpha": [
       "ALPHA",
@@ -82,16 +81,6 @@
       "alpha alphanumericish",
       "DASH alphanumericish",
       "DIGIT alphanumericish"
-    ],
-    "vendorid": [
-      "alpha alpha alpha",
-      "alpha alpha DIGIT",
-      "alpha DIGIT alpha",
-      "alpha DIGIT DIGIT",
-      "DIGIT alpha alpha",
-      "DIGIT alpha DIGIT",
-      "DIGIT DIGIT alpha",
-      "DIGIT DIGIT DIGIT"
     ],
     "param": [
       "paramName EQUALS paramValues"
