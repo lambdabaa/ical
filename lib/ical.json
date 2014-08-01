@@ -36,103 +36,103 @@
 
   "bnf": {
     "file": [
-      "contentLines EOF"
+      ["contentLines EOF", "return $1;"]
     ],
     "contentLines": [
-      "contentLine",
-      "contentLines contentLine"
+      ["contentLine", "return $1;"],
+      ["contentLines contentLine", "return $1.concat($2);"]
     ],
     "contentLine": [
-      "name COLON value CLRF",
-      "name paramList COLON value CLRF"
+      ["name COLON value CLRF", "return { name: $1, value: $3 };"],
+      ["name paramList COLON value CLRF", "return { name: $1, paramList: $2, value: $4 };"]
     ],
     "name": [
-      "ianaToken",
-      "xname"
+      ["ianaToken", "return $1;"],
+      ["xname", "return $1;"]
     ],
     "paramList": [
-      "SEMICOLON param",
-      "SEMICOLON param paramList"
+      ["SEMICOLON param", "return $2;"],
+      ["SEMICOLON param paramList", "return $3.concat($2);"]
     ],
     "value": [
-      "",
-      "valueString"
+      ["", "return null;"],
+      ["valueString", "return $1;"]
     ],
     "ianaToken": [
-      "alphanumericish"
+      ["alphanumericish", "return $1;"]
     ],
     "xname": [
-      "X DASH alphanumericish"
+      ["X DASH alphanumericish", "$1 + $2 + $3"]
     ],
     "alpha": [
-      "ALPHA",
-      "X"
+      ["ALPHA", "return $1;"],
+      ["X", "return $1;"]
     ],
     "alphanumeric": [
-      "alpha",
-      "DIGIT",
-      "alpha alphanumeric",
-      "DIGIT alphanumeric"
+      ["alpha", "return $1;"],
+      ["DIGIT", "return $1;"],
+      ["alpha alphanumeric", "return $2.concat($1);"],
+      ["DIGIT alphanumeric", "return $2.concat($1);"]
     ],
     "alphanumericish": [
-      "alpha",
-      "DASH",
-      "DIGIT",
-      "alpha alphanumericish",
-      "DASH alphanumericish",
-      "DIGIT alphanumericish"
+      ["alpha", "return $1;"],
+      ["DASH", "return $1;"],
+      ["DIGIT", "return $1;"],
+      ["alpha alphanumericish", "return $2.push($1);"],
+      ["DASH alphanumericish", "return $2.push($1);"],
+      ["DIGIT alphanumericish", "return $2.push($1);"]
     ],
     "param": [
-      "paramName EQUALS paramValues"
+      ["paramName EQUALS paramValues", "return { paramName: $1, paramValues: $3 };"]
     ],
     "paramName": [
-      "ianaToken",
-      "xname"
+      ["ianaToken", "return $1;"],
+      ["xname", "return $1;"]
     ],
     "paramValues": [
-      "paramValue",
-      "paramValue COMMA paramValues"
+      ["paramValue", "return $1;"],
+      ["paramValue COMMA paramValues", "return $3.concat($1);"]
     ],
     "paramValue": [
-      "paramText",
-      "quotedString"
+      ["paramText", "return $1;"],
+      ["quotedString", "return $1;"]
     ],
     "paramText": [
-      "",
-      "safeString"
+      ["", "return null;"],
+      ["safeString", "return null;"]
     ],
     "quotedString": [
-      "DQUOTE DQUOTE",
-      "DQUOTE qSafeString DQUOTE"
+      ["DQUOTE DQUOTE", "return null;"],
+      ["DQUOTE qSafeString DQUOTE", "return $2;"]
     ],
     "safeString": [
-      "safeChar",
-      "safeChar safeString"
+      ["safeChar", "return $1"],
+      ["safeChar safeString", "return $2.concat($1);"]
     ],
     "safeChar": [
-      "NON-US-ASCII",
-      "SAFE",
-      "WSP",
-      "alpha"
+      ["NON-US-ASCII", "return $1;"],
+      ["SAFE", "return $1;"],
+      ["WSP", "return $1;"],
+      ["alpha", "return $1;"]
     ],
     "qSafeString": [
-      "qSafeChar",
-      "qSafeChar qSafeString"
+      ["qSafeChar", "return $1;"],
+      ["qSafeChar qSafeString", "return $2.concat($1);"]
     ],
     "qSafeChar": [
-      "COLON",
-      "COMMA",
-      "SEMICOLON",
-      "safeChar"
+      ["COLON", "return $1;"],
+      ["COMMA", "return $1;"],
+      ["SEMICOLON", "return $1;"],
+      ["safeChar", "return $1;"]
     ],
     "valueString": [
-      "valueChar",
-      "valueChar valueString"
+      ["valueChar", "return $1;"],
+      ["valueChar valueString", "return $2.concat($1);"]
     ],
     "valueChar": [
-      "CONTROL",
-      "DQUOTE",
-      "qSafeChar"
+      ["CONTROL", "return $1;"],
+      ["DQUOTE", "return $1;"],
+      ["qSafeChar", "return $1;"]
     ]
   }
 }
