@@ -1,0 +1,148 @@
+{
+  "lex": {
+    "macros": {
+      "ALPHA": "[A-Z][a-z]",
+      "CLRF": "\\n",
+      "CONTROL": "[\\x00-\\x08]|[\\x0A-\\x1F]|\\x7F",
+      "DIGIT": "[0-9]",
+      "DQUOTE": "\\x22",
+      "SAFE": "\\x21|[\\x23-\\x2B]|[\\x2D-\\x39]|[\\x3C-\\x7E]",
+      "UTF8-2": "[\\xC2-\\xDF][\\x80-\\xBF]",
+      "UTF8-3": "\\xE0[\\xA0-\\xBF][\\x80-\\xBF]|[\\xE1-\\xEC][\\x80-\\xBF]{2}|\\xED[\\x80-\\x9F][\\x80-\\xBF]|[\\xEE-\\xEF][\\x80-\\xBF]{2}",
+      "UTF8-4": "\\xF0[\\x90-\\xBF][\\x80-\\xBF]{2}|[\\xF1-\\xF3][\\x80-\\xBF]{3}|\\xF4[\\x80-\\x8F][\\x80-\\xBF]{2}",
+      "WSP": "\\s"
+    },
+
+    "rules": {
+      ":": "return 'COLON';",
+      ",": "return 'COMMA';",
+      "-": "return 'DASH';",
+      "=": "return 'EQUALS';",
+      ";": "return 'SEMICOLON';",
+      "X": "return 'X';",
+      "{ALPHA}": "return 'ALPHA';",
+      "{CLRF}": "return 'CLRF';",
+      "{CONTROL}": "return 'CONTROL';",
+      "{DIGIT}": "return 'DIGIT';",
+      "{DQUOTE}": "return 'DQUOTE';",
+      "{SAFE}": "return 'SAFE';",
+      "{UTF8-2}": "return 'NON-US-ASCII';",
+      "{UTF8-3}": "return 'NON-US-ASCII';",
+      "{UTF8-4}": "return 'NON-US-ASCII';",
+      "{WSP}": "return 'WSP';",
+      "$": "return 'EOF';"
+    }
+  },
+
+  "bnf": {
+    "file": [
+      "contentLines EOF"
+    ],
+    "contentLines": [
+      "contentLine",
+      "contentLines contentLine"
+    ],
+    "contentLine": [
+      "name COLON value CLRF",
+      "name paramList COLON value CLRF"
+    ],
+    "name": [
+      "ianaToken",
+      "xname"
+    ],
+    "paramList": [
+      "SEMICOLON param",
+      "SEMICOLON param paramList"
+    ],
+    "value": [
+      "",
+      "valueString"
+    ],
+    "ianaToken": [
+      "alphanumericish"
+    ],
+    "xname": [
+      "X DASH alphanumericish",
+      "X DASH vendorid DASH alphanumericish"
+    ],
+    "alpha": [
+      "ALPHA",
+      "X"
+    ],
+    "alphanumeric": [
+      "alpha",
+      "DIGIT",
+      "alpha alphanumeric",
+      "DIGIT alphanumeric"
+    ],
+    "alphanumericish": [
+      "alpha",
+      "DASH",
+      "DIGIT",
+      "alpha alphanumericish",
+      "DASH alphanumericish",
+      "DIGIT alphanumericish"
+    ],
+    "vendorid": [
+      "alpha alpha alpha",
+      "alpha alpha DIGIT",
+      "alpha DIGIT alpha",
+      "alpha DIGIT DIGIT",
+      "DIGIT alpha alpha",
+      "DIGIT alpha DIGIT",
+      "DIGIT DIGIT alpha",
+      "DIGIT DIGIT DIGIT"
+    ],
+    "param": [
+      "paramName EQUALS paramValues"
+    ],
+    "paramName": [
+      "ianaToken",
+      "xname"
+    ],
+    "paramValues": [
+      "paramValue",
+      "paramValue COMMA paramValues"
+    ],
+    "paramValue": [
+      "paramText",
+      "quotedString"
+    ],
+    "paramText": [
+      "",
+      "safeString"
+    ],
+    "quotedString": [
+      "DQUOTE DQUOTE",
+      "DQUOTE qSafeString DQUOTE"
+    ],
+    "safeString": [
+      "safeChar",
+      "safeChar safeString"
+    ],
+    "safeChar": [
+      "NON-US-ASCII",
+      "SAFE",
+      "WSP"
+    ],
+    "qSafeString": [
+      "qSafeChar",
+      "qSafeChar qSafeString"
+    ],
+    "qSafeChar": [
+      "COLON",
+      "COMMA",
+      "SEMICOLON",
+      "safeChar"
+    ],
+    "valueString": [
+      "valueChar",
+      "valueChar valueString"
+    ],
+    "valueChar": [
+      "CONTROL",
+      "DQUOTE",
+      "qSafeChar"
+    ]
+  }
+}
