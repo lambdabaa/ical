@@ -3,9 +3,11 @@ ical
 
 RFC 5545 ical parser.
 
-### Overview
+### Related material
 
-So far, this is a relatively strict port of the ABNF grammar from [section 3.1](http://tools.ietf.org/html/rfc5545#section-3.1) to [jison](http://zaach.github.io/jison/).
++ [rfc 5545](http://tools.ietf.org/html/rfc5545)
++ [ABNF](http://en.wikipedia.org/wiki/Augmented_Backus%E2%80%93Naur_Form)
++ [jison](http://zaach.github.io/jison/)
 
 ### Running the tests
 
