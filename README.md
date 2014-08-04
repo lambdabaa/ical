@@ -1,6 +1,8 @@
 ical
 ====
 
+[![Build Status](https://travis-ci.org/gaye/ical.svg)](https://travis-ci.org/gaye/ical)
+
 RFC 5545 ical parser.
 
 ### Related material
