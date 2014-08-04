@@ -17,11 +17,7 @@ suite('parser', function() {
           encoding: 'utf8'
         })
       );
-
-
       var expected = require('./fixtures/' + name);
-      var msg = 'actual: ' + JSON.stringify(ical) + ', ' +
-                'expected: ' + JSON.stringify(expected);
       assert.deepEqual(ical, expected, msg);
     });
   });
