@@ -3,9 +3,14 @@ var assert = require('chai').assert,
     parser = require('../lib/parser');
 
 suite('parser', function() {
-  [
-    'basic'
-  ].forEach(function(name) {
+  fs.readdirSync(__dirname + '/fixtures')
+  .filter(function(filename) {
+    return filename.substring(filename.length - 4) === '.ics';
+  })
+  .map(function(filename) {
+    return filename.substring(0, filename.length - 4);
+  })
+  .forEach(function(name) {
     test(name, function() {
       var ical = parser.parse(
         fs.readFileSync(__dirname + '/fixtures/' + name + '.ics', {
@@ -14,7 +19,10 @@ suite('parser', function() {
       );
 
 
-      assert.deepEqual(ical, require('./fixtures/' + name));
+      var expected = require('./fixtures/' + name);
+      var msg = 'actual: ' + JSON.stringify(ical) + ', ' +
+                'expected: ' + JSON.stringify(expected);
+      assert.deepEqual(ical, expected, msg);
     });
   });
 });

@@ -1,0 +1,10 @@
+[
+  {
+    "name": "ATTENDEE",
+    "value": "mailto:jsmith@example.com",
+    "paramList": [
+      { "paramName": "RSVP", "paramValues": ["TRUE"] },
+      { "paramName": "ROLE", "paramValues": ["REQ-PARTICIPANT"] }
+    ]
+  }
+]

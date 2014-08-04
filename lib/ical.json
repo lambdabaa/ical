@@ -39,8 +39,8 @@
       ["contentLines EOF", "return $1;"]
     ],
     "contentLines": [
-      ["contentLine", "$$ = $1;"],
-      ["contentLine contentLines", "$$ = [$1].concat($2);"]
+      ["contentLine", "$$ = [$1];"],
+      ["contentLine contentLines", "$$ = $2; $$.unshift($1);"]
     ],
     "contentLine": [
       ["name COLON value CLRF", "$$ = { name: $1, value: $3 };"],
@@ -51,8 +51,8 @@
       ["xname", "$$ = $1;"]
     ],
     "paramList": [
-      ["SEMICOLON param", "$$ = $2;"],
-      ["SEMICOLON param paramList", "$$ = [$2].concat($3);"]
+      ["SEMICOLON param", "$$ = [$2];"],
+      ["SEMICOLON param paramList", "$$ = $3; $$.unshift($2);"]
     ],
     "value": [
       ["", "$$ = null;"],
@@ -90,8 +90,8 @@
       ["xname", "$$ = $1;"]
     ],
     "paramValues": [
-      ["paramValue", "$$ = $1;"],
-      ["paramValue COMMA paramValues", "$$ = [$1].concat($3);"]
+      ["paramValue", "$$ = [$1];"],
+      ["paramValue COMMA paramValues", "$$ = $3; $$.unshift($1);"]
     ],
     "paramValue": [
       ["paramText", "$$ = $1;"],
