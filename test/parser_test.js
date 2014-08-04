@@ -1,7 +1,20 @@
-var parser = require('../lib/parser');
+var assert = require('chai').assert,
+    fs = require('fs'),
+    parser = require('../lib/parser');
 
 suite('parser', function() {
-  test('basic', function() {
-    var line = parser.parse('BEGIN:VCALENDAR\n');
+  [
+    'basic'
+  ].forEach(function(name) {
+    test(name, function() {
+      var ical = parser.parse(
+        fs.readFileSync(__dirname + '/fixtures/' + name + '.ics', {
+          encoding: 'utf8'
+        })
+      );
+
+
+      assert.deepEqual(ical, require('./fixtures/' + name));
+    });
   });
 });

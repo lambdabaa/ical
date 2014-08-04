@@ -1,0 +1,11 @@
+[
+  { "name": "BEGIN", "value": "VCALENDAR" },
+  { "name": "BEGIN", "value": "VEVENT" },
+  { "name": "UID", "value": "19970610T172345Z-AF23B2@example.com" },
+  { "name": "DTSTAMP", "value": "19970610T172345Z" },
+  { "name": "DTSTART", "value": "19970714T170000Z" },
+  { "name": "DTEND", "value": "19970715T040000Z" },
+  { "name": "SUMMARY", "value": "Bastille Day Party" },
+  { "name": "END", "value": "VEVENT" },
+  { "name": "END", "value": "VCALENDAR" }
+]

@@ -39,100 +39,100 @@
       ["contentLines EOF", "return $1;"]
     ],
     "contentLines": [
-      ["contentLine", "return $1;"],
-      ["contentLines contentLine", "return $1.concat($2);"]
+      ["contentLine", "$$ = $1;"],
+      ["contentLine contentLines", "$$ = [$1].concat($2);"]
     ],
     "contentLine": [
-      ["name COLON value CLRF", "return { name: $1, value: $3 };"],
-      ["name paramList COLON value CLRF", "return { name: $1, paramList: $2, value: $4 };"]
+      ["name COLON value CLRF", "$$ = { name: $1, value: $3 };"],
+      ["name paramList COLON value CLRF", "$$ = { name: $1, paramList: $2, value: $4 };"]
     ],
     "name": [
-      ["ianaToken", "return $1;"],
-      ["xname", "return $1;"]
+      ["ianaToken", "$$ = $1;"],
+      ["xname", "$$ = $1;"]
     ],
     "paramList": [
-      ["SEMICOLON param", "return $2;"],
-      ["SEMICOLON param paramList", "return $3.concat($2);"]
+      ["SEMICOLON param", "$$ = $2;"],
+      ["SEMICOLON param paramList", "$$ = [$2].concat($3);"]
     ],
     "value": [
-      ["", "return null;"],
-      ["valueString", "return $1;"]
+      ["", "$$ = null;"],
+      ["valueString", "$$ = $1;"]
     ],
     "ianaToken": [
-      ["alphanumericish", "return $1;"]
+      ["alphanumericish", "$$ = $1;"]
     ],
     "xname": [
-      ["X DASH alphanumericish", "$1 + $2 + $3"]
+      ["X DASH alphanumericish", "$$ = $1 + $2 + $3;"]
     ],
     "alpha": [
-      ["ALPHA", "return $1;"],
-      ["X", "return $1;"]
+      ["ALPHA", "$$ = $1;"],
+      ["X", "$$ = $1;"]
     ],
     "alphanumeric": [
-      ["alpha", "return $1;"],
-      ["DIGIT", "return $1;"],
-      ["alpha alphanumeric", "return $2.concat($1);"],
-      ["DIGIT alphanumeric", "return $2.concat($1);"]
+      ["alpha", "$$ = $1;"],
+      ["DIGIT", "$$ = $1;"],
+      ["alpha alphanumeric", "$$ = $1 + $2;"],
+      ["DIGIT alphanumeric", "$$ = $1 + $2;"]
     ],
     "alphanumericish": [
-      ["alpha", "return $1;"],
-      ["DASH", "return $1;"],
-      ["DIGIT", "return $1;"],
-      ["alpha alphanumericish", "return $2.push($1);"],
-      ["DASH alphanumericish", "return $2.push($1);"],
-      ["DIGIT alphanumericish", "return $2.push($1);"]
+      ["alpha", "$$ = [$1];"],
+      ["DASH", "$$ = [$1];"],
+      ["DIGIT", "$$ = [$1];"],
+      ["alpha alphanumericish", "$$ = $1 + $2"],
+      ["DASH alphanumericish", "$$ = $1 + $2;"],
+      ["DIGIT alphanumericish", "$$ = $1 + $2;"]
     ],
     "param": [
-      ["paramName EQUALS paramValues", "return { paramName: $1, paramValues: $3 };"]
+      ["paramName EQUALS paramValues", "$$ = { paramName: $1, paramValues: $3 };"]
     ],
     "paramName": [
-      ["ianaToken", "return $1;"],
-      ["xname", "return $1;"]
+      ["ianaToken", "$$ = $1;"],
+      ["xname", "$$ = $1;"]
     ],
     "paramValues": [
-      ["paramValue", "return $1;"],
-      ["paramValue COMMA paramValues", "return $3.concat($1);"]
+      ["paramValue", "$$ = $1;"],
+      ["paramValue COMMA paramValues", "$$ = [$1].concat($3);"]
     ],
     "paramValue": [
-      ["paramText", "return $1;"],
-      ["quotedString", "return $1;"]
+      ["paramText", "$$ = $1;"],
+      ["quotedString", "$$ = $1;"]
     ],
     "paramText": [
-      ["", "return null;"],
-      ["safeString", "return null;"]
+      ["", "$$ = null;"],
+      ["safeString", "$$ = $1;"]
     ],
     "quotedString": [
-      ["DQUOTE DQUOTE", "return null;"],
-      ["DQUOTE qSafeString DQUOTE", "return $2;"]
+      ["DQUOTE DQUOTE", "$$ = null;"],
+      ["DQUOTE qSafeString DQUOTE", "$$ = $2;"]
     ],
     "safeString": [
-      ["safeChar", "return $1"],
-      ["safeChar safeString", "return $2.concat($1);"]
+      ["safeChar", "$$ = $1"],
+      ["safeChar safeString", "$$ = $1 + $2;"]
     ],
     "safeChar": [
-      ["NON-US-ASCII", "return $1;"],
-      ["SAFE", "return $1;"],
-      ["WSP", "return $1;"],
-      ["alpha", "return $1;"]
+      ["NON-US-ASCII", "$$ = $1;"],
+      ["SAFE", "$$ = $1;"],
+      ["WSP", "$$ = $1;"],
+      ["alphanumericish", "$$ = $1;"]
     ],
     "qSafeString": [
-      ["qSafeChar", "return $1;"],
-      ["qSafeChar qSafeString", "return $2.concat($1);"]
+      ["qSafeChar", "$$ = $1;"],
+      ["qSafeChar qSafeString", "$$ = $1 + $2;"]
     ],
     "qSafeChar": [
-      ["COLON", "return $1;"],
-      ["COMMA", "return $1;"],
-      ["SEMICOLON", "return $1;"],
-      ["safeChar", "return $1;"]
+      ["COLON", "$$ = $1;"],
+      ["COMMA", "$$ = $1;"],
+      ["SEMICOLON", "$$ = $1;"],
+      ["safeChar", "$$ = $1;"]
     ],
     "valueString": [
-      ["valueChar", "return $1;"],
-      ["valueChar valueString", "return $2.concat($1);"]
+      ["valueChar", "$$ = $1;"],
+      ["valueChar valueString", "$$ = $1 + $2;"]
     ],
     "valueChar": [
-      ["CONTROL", "return $1;"],
-      ["DQUOTE", "return $1;"],
-      ["qSafeChar", "return $1;"]
+      ["CONTROL", "$$ = $1;"],
+      ["DQUOTE", "$$ = $1"],
+      ["qSafeChar", "$$ = $1;"]
     ]
   }
 }
