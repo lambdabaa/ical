@@ -18,7 +18,7 @@ suite('parser', function() {
         })
       );
       var expected = require('./fixtures/' + name);
-      assert.deepEqual(ical, expected, msg);
+      assert.deepEqual(ical, expected);
     });
   });
 });
