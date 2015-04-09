@@ -1,7 +1,7 @@
 {
   "lex": {
     "macros": {
-      "ALPHA": "[A-Za-z]",
+      "ALPHA": "[A-WYZa-z]",
       "CLRF": "\\n",
       "CONTROL": "[\\x00-\\x08]|[\\x0A-\\x1F]|\\x7F",
       "DIGIT": "[0-9]",
@@ -38,101 +38,114 @@
     "file": [
       ["contentLines EOF", "return $1;"]
     ],
+
     "contentLines": [
       ["contentLine", "$$ = [$1];"],
       ["contentLine contentLines", "$$ = $2; $$.unshift($1);"]
     ],
+
     "contentLine": [
       ["name COLON value CLRF", "$$ = { name: $1, value: $3 };"],
       ["name paramList COLON value CLRF", "$$ = { name: $1, paramList: $2, value: $4 };"]
     ],
+
     "name": [
       ["ianaToken", "$$ = $1;"],
       ["xname", "$$ = $1;"]
     ],
+
+    // Importantly, this cannot begin with "X-"
+    "ianaToken": [
+      ["X alpha alphanumericdash", "$$ = $1 + $2 + $3;"],
+      ["X DIGIT alphanumericdash", "$$ = $1 + $2 + $3;"],
+      ["ALPHA alphanumericdash", "$$ = $1 + $2;"],
+      ["DIGIT alphanumericdash", "$$ = $1 + $2;"],
+      ["DASH alphanumericdash", "$$ = $1 + $2;"]
+    ],
+
+    "xname": [
+      ["X DASH alphanumericdash", "$$ = $1 + $2 + $3;"]
+    ],
+
     "paramList": [
       ["SEMICOLON param", "$$ = [$2];"],
       ["SEMICOLON param paramList", "$$ = $3; $$.unshift($2);"]
     ],
-    "value": [
-      ["", "$$ = null;"],
-      ["valueString", "$$ = $1;"]
-    ],
-    "ianaToken": [
-      ["alphanumericish", "$$ = $1;"]
-    ],
-    "xname": [
-      ["X DASH alphanumericish", "$$ = $1 + $2 + $3;"]
-    ],
-    "alpha": [
-      ["ALPHA", "$$ = $1;"],
-      ["X", "$$ = $1;"]
-    ],
-    "alphanumeric": [
-      ["alpha", "$$ = $1;"],
-      ["DIGIT", "$$ = $1;"],
-      ["alpha alphanumeric", "$$ = $1 + $2;"],
-      ["DIGIT alphanumeric", "$$ = $1 + $2;"]
-    ],
-    "alphanumericish": [
-      ["alpha", "$$ = [$1];"],
-      ["DASH", "$$ = [$1];"],
-      ["DIGIT", "$$ = [$1];"],
-      ["alpha alphanumericish", "$$ = $1 + $2"],
-      ["DASH alphanumericish", "$$ = $1 + $2;"],
-      ["DIGIT alphanumericish", "$$ = $1 + $2;"]
-    ],
+
     "param": [
       ["paramName EQUALS paramValues", "$$ = { paramName: $1, paramValues: $3 };"]
     ],
+
     "paramName": [
       ["ianaToken", "$$ = $1;"],
       ["xname", "$$ = $1;"]
     ],
+
     "paramValues": [
       ["paramValue", "$$ = [$1];"],
       ["paramValue COMMA paramValues", "$$ = $3; $$.unshift($1);"]
     ],
+
     "paramValue": [
       ["paramText", "$$ = $1;"],
       ["quotedString", "$$ = $1;"]
     ],
+
     "paramText": [
-      ["", "$$ = null;"],
-      ["safeString", "$$ = $1;"]
+      ["", "$$ = '';"],
+      ["safeChar paramText", "$$ = $1 + $2;"]
     ],
+
+    "value": [
+      ["", "$$ = '';"],
+      ["valueChar value", "$$ = $1 + $2;"]
+    ],
+
     "quotedString": [
-      ["DQUOTE DQUOTE", "$$ = null;"],
       ["DQUOTE qSafeString DQUOTE", "$$ = $2;"]
     ],
-    "safeString": [
-      ["safeChar", "$$ = $1"],
-      ["safeChar safeString", "$$ = $1 + $2;"]
+
+    "qSafeString": [
+      ["", "$$ = '';"],
+      ["qSafeChar qSafeString", "$$ = $1 + $2;"]
     ],
+
     "safeChar": [
       ["NON-US-ASCII", "$$ = $1;"],
       ["SAFE", "$$ = $1;"],
       ["WSP", "$$ = $1;"],
-      ["alphanumericish", "$$ = $1;"]
+      ["alphanumericdash", "$$ = $1;"]
     ],
-    "qSafeString": [
-      ["qSafeChar", "$$ = $1;"],
-      ["qSafeChar qSafeString", "$$ = $1 + $2;"]
-    ],
+
     "qSafeChar": [
       ["COLON", "$$ = $1;"],
       ["COMMA", "$$ = $1;"],
       ["SEMICOLON", "$$ = $1;"],
       ["safeChar", "$$ = $1;"]
     ],
-    "valueString": [
-      ["valueChar", "$$ = $1;"],
-      ["valueChar valueString", "$$ = $1 + $2;"]
-    ],
+
     "valueChar": [
       ["CONTROL", "$$ = $1;"],
       ["DQUOTE", "$$ = $1"],
       ["qSafeChar", "$$ = $1;"]
+    ],
+
+    "alpha": [
+      ["ALPHA", "$$ = $1;"],
+      ["X", "$$ = $1;"]
+    ],
+
+    "alphanumeric": [
+      ["alpha", "$$ = $1;"],
+      ["DIGIT", "$$ = $1;"],
+      ["alphanumeric alphanumeric", "$$ = $1 + $2;"]
+    ],
+
+    "alphanumericdash": [
+      ["alpha", "$$ = [$1];"],
+      ["DASH", "$$ = [$1];"],
+      ["DIGIT", "$$ = [$1];"],
+      ["alphanumericdash alphanumericdash", "$$ = $1 + $2;"]
     ]
   }
 }

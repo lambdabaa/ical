@@ -1,4 +1,4 @@
-ical.js: node_modules
+ical.js: lib/ical.json node_modules
 	./node_modules/.bin/jison ./lib/ical.json \
 		--json \
 		--module-type commonjs
