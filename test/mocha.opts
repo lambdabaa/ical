@@ -1,2 +1,3 @@
 --reporter spec
+--require test/entrypoint
 --ui tdd

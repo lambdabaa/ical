@@ -1,7 +1,7 @@
 {
   "lex": {
     "macros": {
-      "ALPHA": "[A-WYZ]|[a-z]",
+      "ALPHA": "[A-Za-z]",
       "CLRF": "\\n",
       "CONTROL": "[\\x00-\\x08]|[\\x0A-\\x1F]|\\x7F",
       "DIGIT": "[0-9]",
